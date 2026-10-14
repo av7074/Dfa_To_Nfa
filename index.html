@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFA → NFA Simulator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div><div class="eyebrow">FINITE AUTOMATA LAB PROJECT</div><h1>DFA → NFA <span>Simulator</span></h1></div>
+  <nav><a href="#simulator">Simulator</a><a href="#conversion">Conversion</a><a href="#theory">Theory</a><a href="#tests">Tests</a><a href="#report">Report</a></nav>
+</header>
+<main>
+<section class="hero">
+  <div><div class="badge">✓ Equivalent Automata</div><h2>Convert, visualize & simulate a DFA as an NFA.</h2><p>Interactive finite automata laboratory demonstrating that every DFA is a special case of an NFA. Build a machine, convert it, run strings step-by-step, and verify equivalence automatically.</p><a class="primary" href="#simulator">Open Simulator ↓</a></div>
+  <div class="formula-card"><div class="mini">CORE RULE</div><div class="formula">δ<sub>N</sub>(q,a) = { δ<sub>D</sub>(q,a) }</div><p>No ε-transitions are required because a DFA already satisfies the NFA definition.</p></div>
+</section>
+<section id="simulator" class="section">
+<div class="section-head"><div><div class="eyebrow">INTERACTIVE LAB</div><h2>Automata Simulator</h2></div><div class="status" id="status">Ready</div></div>
+<div class="grid controls-grid">
+  <div class="panel builder"><h3>DFA Definition</h3><div class="row"><label>States</label><input id="states" value="q0,q1,q2"></div><div class="row"><label>Alphabet</label><input id="alphabet" value="0,1"></div><div class="row"><label>Start state</label><select id="start"></select></div><div class="row"><label>Final states</label><input id="finals" value="q2"></div><h4>Transitions</h4><div id="transitionInputs"></div><button class="primary full" id="buildBtn">Build DFA & Convert to NFA</button></div>
+  <div class="panel"><div class="panel-title"><h3>DFA Transition Table</h3><span class="pill">Deterministic</span></div><div id="dfaTable"></div></div>
+  <div class="panel"><div class="panel-title"><h3>NFA Transition Table</h3><span class="pill green">Equivalent</span></div><div id="nfaTable"></div></div>
+</div>
+<div class="diagram-grid"><div class="panel"><div class="panel-title"><h3>DFA State Diagram</h3><span id="dfaDiagramState">q0</span></div><canvas id="dfaCanvas"></canvas></div><div class="panel"><div class="panel-title"><h3>Generated NFA Diagram</h3><span id="nfaDiagramState">q0</span></div><canvas id="nfaCanvas"></canvas></div></div>
+<div class="panel simulation"><div class="panel-title"><h3>Step-by-Step Simulation</h3><span id="simResult" class="pill">Not started</span></div><div class="sim-controls"><input id="inputString" placeholder="Enter string e.g. 01101"><button class="primary" id="startSim">Start</button><button id="nextSim">Next Step</button><button id="pauseSim">Pause</button><button id="resetSim">Reset</button><label class="speed">Speed <input id="speed" type="range" min="150" max="1500" value="700"></label></div><div class="stepbox"><div><b>Current step:</b> <span id="stepText">Press Start to begin.</span></div><div class="path" id="pathText">—</div></div></div>
+</section>
+<section id="conversion" class="section alt"><div class="section-head"><div><div class="eyebrow">FORMAL CONVERSION</div><h2>DFA → NFA Construction</h2></div></div><div class="steps"><article><b>01</b><h3>Keep the same components</h3><p>Q, Σ, start state and accepting states remain unchanged.</p></article><article><b>02</b><h3>Convert each transition</h3><p>If δ(q,a)=p in the DFA, define δ<sub>N</sub>(q,a)={p} in the NFA.</p></article><article><b>03</b><h3>Verify equivalence</h3><p>Both machines accept exactly the same language, so every tested string gives the same result.</p></article></div><div class="conversion-box"><pre id="conversionText"></pre></div></section>
+<section id="theory" class="section"><div class="section-head"><div><div class="eyebrow">THEORY</div><h2>Finite Automata Concepts</h2></div></div><div class="cards"><article class="info"><h3>What is a DFA?</h3><p>A Deterministic Finite Automaton has exactly one possible next state for every state and input symbol.</p><div class="math">M = (Q, Σ, δ, q₀, F)</div></article><article class="info"><h3>What is an NFA?</h3><p>An NFA may have zero, one, or multiple possible next states for an input symbol. It may also support ε-transitions, although this conversion does not need them.</p><div class="math">N = (Q, Σ, δ<sub>N</sub>, q₀, F)</div></article><article class="info"><h3>Key Observation</h3><p>Every DFA is already an NFA. Therefore DFA → NFA conversion is direct and does not require subset construction.</p><div class="math">δ<sub>N</sub>(q,a) = {δ(q,a)}</div></article></div></section>
+<section id="tests" class="section alt"><div class="section-head"><div><div class="eyebrow">VALIDATION</div><h2>Automated Equivalence Test Suite</h2></div><button class="primary" id="runTests">Run Test Suite</button></div><div id="testSummary" class="test-summary">Tests have not been executed.</div><div id="testsTable"></div></section>
+<section id="report" class="section"><div class="section-head"><div><div class="eyebrow">PROJECT REPORT</div><h2>Documentation</h2></div></div><div class="report-grid"><article><h3>Problem Statement</h3><p>Develop an interactive simulator that accepts a DFA and constructs an equivalent NFA while allowing the user to visualize and validate both automata.</p></article><article><h3>Objectives</h3><ul><li>Represent a DFA formally.</li><li>Perform direct DFA→NFA conversion.</li><li>Visualize states and transitions.</li><li>Simulate input strings step-by-step.</li><li>Automatically verify equivalence.</li></ul></article><article><h3>Algorithm</h3><ol><li>Read Q, Σ, q₀ and F.</li><li>Copy Q, Σ, q₀ and F to the NFA.</li><li>For every δ(q,a)=p, store {p}.</li><li>Return the constructed NFA.</li></ol></article><article><h3>Complexity</h3><p>For a DFA with |Q| states and |Σ| symbols, the conversion processes |Q|×|Σ| transitions.</p><div class="math">Time: O(|Q||Σ|) &nbsp; Space: O(|Q||Σ|)</div></article><article><h3>Applications</h3><p>Compiler design, lexical analysis, pattern matching, protocol verification, model checking and theoretical computation.</p></article><article><h3>Advantages & Limitations</h3><p><b>Advantages:</b> simple, fast, visual and easy to verify. <b>Limitation:</b> this direct conversion does not demonstrate ε-NFA or NFA→DFA subset construction.</p></article></div><div class="conclusion"><h3>Conclusion</h3><p>The simulator demonstrates that a DFA can be represented directly as an equivalent NFA by replacing every single destination state with a one-element set. The same input language is therefore preserved.</p></div></section>
+</main>
+<footer>DFA → NFA Simulator · Finite Automata Lab · Interactive Educational Project</footer>
+<script src="script.js"></script>
+</body>
+</html>
